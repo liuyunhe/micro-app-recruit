@@ -8,12 +8,16 @@ import { createRouter,createWebHistory } from 'vue-router'
 
 const routes = [
   {
+    path: '/main',
+    redirect: '/main/childHome'
+  },
+  {
     path: '/main/login',
     name: 'login',
     component: login,
     meta: {
       title: '',
-      keepAlive:false
+      keepAlive: false
     }
   },
   {
@@ -22,7 +26,7 @@ const routes = [
     component: childDemo,
     meta: {
       title: '',
-      keepAlive:false
+      keepAlive: false
     }
   },
   {
@@ -31,7 +35,7 @@ const routes = [
     component: childHome,
     meta: {
       title: '',
-      keepAlive:false
+      keepAlive: false
     }
   },
   {
@@ -40,7 +44,7 @@ const routes = [
     component: childJob,
     meta: {
       title: '',
-      keepAlive:false
+      keepAlive: false
     }
   },
   {
@@ -49,7 +53,7 @@ const routes = [
     component: childEnterprise,
     meta: {
       title: '',
-      keepAlive:false
+      keepAlive: false
     }
   },
   {
@@ -58,7 +62,7 @@ const routes = [
     component: childAbout,
     meta: {
       title: '',
-      keepAlive:false
+      keepAlive: false
     }
   }
 ]
