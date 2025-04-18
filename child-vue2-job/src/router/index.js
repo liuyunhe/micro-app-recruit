@@ -6,8 +6,8 @@ const findJob = (r)=> require.ensure([],()=>r(require("@/views/findJob")),"findJ
 const jobDetail = (r)=> require.ensure([],()=>r(require("@/views/jobDetail")),"jobDetail")
 
 export default new Router({
-  mode: 'history',
-  base:window.__MICRO_APP_BASE_ROUTE__ || process.env.BASE_URL,
+  mode: 'hash',
+  base: '/main/childJob/',
   routes: [
     {
       path: '/',

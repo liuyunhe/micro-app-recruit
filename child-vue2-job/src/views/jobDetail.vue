@@ -5,39 +5,56 @@
       <div class="w-1200-auto flex-layout relative">
         <div class="base-l">
           <h2>
-            {{jobDetail.jobTitle}}
-            <span class="salary">{{jobDetail.salaryRange ==='不限' ? '薪资不限' : jobDetail.salaryRange}}</span>
+            {{ jobDetail.jobTitle }}
+            <span class="salary">{{
+              jobDetail.salaryRange === '不限'
+                ? '薪资不限'
+                : jobDetail.salaryRange
+            }}</span>
           </h2>
           <p class="labels">
             <span title="工作地址">
               <i class="el-icon-location"></i>
-              {{jobDetail.workProvince}}{{jobDetail.workCity}}
+              {{ jobDetail.workProvince }}{{ jobDetail.workCity }}
             </span>
             <span title="工作经验">
               <i class="el-icon-suitcase-1"></i>
               <template v-if="jobDetail.workExperience">
-                {{jobDetail.workExperience ==='不限' ? '经验不限' : jobDetail.workExperience+'工作经验'}}
+                {{
+                  jobDetail.workExperience === '不限'
+                    ? '经验不限'
+                    : jobDetail.workExperience + '工作经验'
+                }}
               </template>
               <template v-else>-</template>
             </span>
             <span title="年龄要求">
               <i class="el-icon-user"></i>
-              <template v-if="jobDetail.ageMin > 0 && jobDetail.ageMin && jobDetail.ageMax">
-               {{jobDetail.ageMin }}-{{jobDetail.ageMax }}岁
+              <template
+                v-if="
+                  jobDetail.ageMin > 0 && jobDetail.ageMin && jobDetail.ageMax
+                "
+              >
+                {{ jobDetail.ageMin }}-{{ jobDetail.ageMax }}岁
               </template>
               <template v-else-if="jobDetail.ageMin === -1">
-               年龄不限
+                年龄不限
               </template>
               <template v-else>-</template>
             </span>
           </p>
           <p class="tags">
-            <el-tag size="small" v-for="(item,index) in jobDetail.welfareTags" :key="index">{{item}}</el-tag>
+            <el-tag
+              size="small"
+              v-for="(item, index) in jobDetail.welfareTags"
+              :key="index"
+              >{{ item }}</el-tag
+            >
           </p>
           <p class="foot">
             <span>
               <i class="el-icon-time"></i>
-              {{jobDetail.refreshTime}}更新
+              {{ jobDetail.refreshTime }}更新
             </span>
           </p>
         </div>
@@ -51,17 +68,19 @@
             <img :src="jobDetail.hrHeadPortrait" alt />
             <div class="user-mess">
               <p>
-                {{jobDetail.hrName || '佚名'}}
-                <span>{{jobDetail.refreshTimeStr}}更新</span>
+                {{ jobDetail.hrName || '佚名' }}
+                <span>{{ jobDetail.refreshTimeStr }}更新</span>
               </p>
-              <p>{{jobDetail.enterpriseName}} · {{jobDetail.hrPost}}</p>
+              <p>{{ jobDetail.enterpriseName }} · {{ jobDetail.hrPost }}</p>
             </div>
           </div>
           <el-divider></el-divider>
 
           <h3 class="hui-title">职位描述</h3>
-          <p class="cont">{{jobDetail.jobDescription}}</p>
-          <div class="tips">求职提醒：求职过程请勿缴纳费用，谨防诈骗！若信息不实请举报。</div>
+          <p class="cont">{{ jobDetail.jobDescription }}</p>
+          <div class="tips">
+            求职提醒：求职过程请勿缴纳费用，谨防诈骗！若信息不实请举报。
+          </div>
         </div>
 
         <div class="detail-card">
@@ -69,27 +88,51 @@
           <!-- 表格 -->
           <div class="job-part">
             <!-- 左侧 -->
-            <ul class="job-list" v-if="jobDetail.enterpriseJobList && jobDetail.enterpriseJobList.length > 0">
-              <li v-for="(item,index) in jobDetail.enterpriseJobList" :key="index">
+            <ul
+              class="job-list"
+              v-if="
+                jobDetail.enterpriseJobList &&
+                jobDetail.enterpriseJobList.length > 0
+              "
+            >
+              <li
+                v-for="(item, index) in jobDetail.enterpriseJobList"
+                :key="index"
+              >
                 <div class="part-1">
                   <div class="left">
-                    <el-button class="title" type="text" @click="toJobDetail(item)">
-                      {{item.jobTitle}}
+                    <el-button
+                      class="title"
+                      type="text"
+                      @click="toJobDetail(item)"
+                    >
+                      {{ item.jobTitle }}
                       <el-tag
                         class="ml-10"
                         size="mini"
-                        v-for="(a,index) in item.labels"
+                        v-for="(a, index) in item.labels"
                         :key="index"
-                        :type="a.indexOf('紧急') !==  -1 && 'danger' || a.indexOf('热门') !==  -1 &&  'warning'"
-                      >{{a}}</el-tag>
+                        :type="
+                          (a.indexOf('紧急') !== -1 && 'danger') ||
+                          (a.indexOf('热门') !== -1 && 'warning')
+                        "
+                        >{{ a }}</el-tag
+                      >
                     </el-button>
                     <p>
-                      <span class="salary">{{item.salaryRange  === '不限'? '薪资不限' : item.salaryRange}}</span>
-                      <span
-                        class="label"
-                        v-if="item.workCity"
-                      >{{item.workProvince}} {{item.workCity}}</span>
-                      <span class="label" v-if="item.workExperience">{{item.workExperience=== '不限'? '经历不限' : item.workExperience+'年工作经验'}}</span>
+                      <span class="salary">{{
+                        item.salaryRange === '不限'
+                          ? '薪资不限'
+                          : item.salaryRange
+                      }}</span>
+                      <span class="label" v-if="item.workCity"
+                        >{{ item.workProvince }} {{ item.workCity }}</span
+                      >
+                      <span class="label" v-if="item.workExperience">{{
+                        item.workExperience === '不限'
+                          ? '经历不限'
+                          : item.workExperience + '年工作经验'
+                      }}</span>
                     </p>
                   </div>
                   <div class="mid">
@@ -104,25 +147,35 @@
                       :alt="item.enterpriseName"
                     />
                     <div class="comp-mess">
-                      <p class="title">{{item.enterpriseName}}</p>
-                      <span class="label" v-if="item.industry">{{item.industry}}</span>
-                      <span class="label" v-if="item.scale">{{item.scale}}人以上</span>
+                      <p class="title">{{ item.enterpriseName }}</p>
+                      <span class="label" v-if="item.industry">{{
+                        item.industry
+                      }}</span>
+                      <span class="label" v-if="item.scale"
+                        >{{ item.scale }}人以上</span
+                      >
                     </div>
                   </div>
                 </div>
                 <div class="part-2">
                   <p class="labels">
-                    <span v-for="(itemInner,indexInner) in item.welfareTags" :key="indexInner">
-                      {{itemInner}}
+                    <span
+                      v-for="(itemInner, indexInner) in item.welfareTags"
+                      :key="indexInner"
+                    >
+                      {{ itemInner }}
                       <el-divider direction="vertical"></el-divider>
                     </span>
                   </p>
-                  <p class="time">{{item.refreshTimeStr}}更新</p>
+                  <p class="time">{{ item.refreshTimeStr }}更新</p>
                 </div>
               </li>
             </ul>
-            <el-empty v-else class="margin-center" description="暂无职位"></el-empty>
-          
+            <el-empty
+              v-else
+              class="margin-center"
+              description="暂无职位"
+            ></el-empty>
           </div>
         </div>
       </div>
@@ -132,22 +185,26 @@
           <div class="card-header">公司基本信息</div>
           <div class="card-mess">
             <div class="logo">
-              <img v-if="jobDetail.enterpriseLogo" :src="jobDetail.enterpriseLogo" alt />
+              <img
+                v-if="jobDetail.enterpriseLogo"
+                :src="jobDetail.enterpriseLogo"
+                alt
+              />
               <img v-else src="../assets/images/default_company.png" alt />
-              <span>{{jobDetail.enterpriseName}}</span>
+              <span>{{ jobDetail.enterpriseName }}</span>
             </div>
 
             <p title="融资情况">
               <i class="el-icon-data-analysis"></i>
-              {{jobDetail.financing+"轮" || '-'}}
+              {{ jobDetail.financing + '轮' || '-' }}
             </p>
             <p title="公司规模">
               <i class="el-icon-user-solid"></i>
-              {{jobDetail.scale+"人以上" || '-'}}
+              {{ jobDetail.scale + '人以上' || '-' }}
             </p>
             <p title="所属行业">
               <i class="el-icon-office-building"></i>
-              {{jobDetail.enterpriseIndustry || '-'}}
+              {{ jobDetail.enterpriseIndustry || '-' }}
             </p>
             <el-button
               @click="toEnterpriseDetail(jobDetail)"
@@ -155,7 +212,8 @@
               plain
               type="primary"
               class="margin-center-block mt-20"
-            >公司主页 >></el-button>
+              >公司主页 >></el-button
+            >
           </div>
         </div>
       </div>
@@ -166,51 +224,103 @@
       <div class="cont-l"></div>
       <div class="cont-r"></div>
     </div>
-
   </section>
 </template>
 
 <script>
-import findJobApi from "@/api/findJobApi";
+// import findJobApi from "@/api/findJobApi";
 
 export default {
   data() {
     return {
-      jobDetail: {},
-    };
+      jobDetail: {
+        jobTitle: '前端开发工程师',
+        salaryRange: '15-30K',
+        workProvince: '浙江省',
+        workCity: '杭州市',
+        workExperience: '3-5年',
+        ageMin: 25,
+        ageMax: 35,
+        welfareTags: ['五险一金', '带薪年假', '年度体检', '弹性工作'],
+        refreshTime: '2025-04-18',
+        refreshTimeStr: '1小时前',
+
+        // HR信息
+        hrHeadPortrait: 'https://example.com/avatar.jpg',
+        hrName: '张经理',
+        hrPost: '招聘主管',
+
+        // 职位描述
+        jobDescription:
+          '负责公司核心产品的前端开发工作，参与需求评审、技术方案设计，持续优化前端体验和页面性能。要求熟练掌握Vue技术栈，有大型项目开发经验。',
+
+        // 公司信息
+        enterpriseName: '阿里云智能',
+        enterpriseLogo: 'https://example.com/company-logo.png',
+        financing: 'D',
+        scale: '1000',
+        enterpriseIndustry: '互联网/云计算',
+
+        // 公司其他职位
+        enterpriseJobList: [
+          {
+            jobTitle: '资深前端开发',
+            labels: ['紧急', '热门'],
+            salaryRange: '25-40K',
+            workProvince: '浙江省',
+            workCity: '杭州市',
+            workExperience: '5-8年',
+            enterpriseLogo: 'https://example.com/company-logo.png',
+            industry: '互联网',
+            scale: '1000',
+            welfareTags: ['股票期权', '技术培训', '弹性办公'],
+            refreshTimeStr: '2小时前'
+          },
+          {
+            jobTitle: 'Node.js开发工程师',
+            labels: ['新职位'],
+            salaryRange: '20-35K',
+            workProvince: '浙江省',
+            workCity: '杭州市',
+            workExperience: '3-5年',
+            enterpriseLogo: 'https://example.com/company-logo.png',
+            industry: '互联网',
+            scale: '1000',
+            welfareTags: ['六险一金', '年度旅游'],
+            refreshTimeStr: '3小时前'
+          }
+        ]
+      }
+    }
   },
-  watch: {
-  },
-  computed: {
-  },
+  watch: {},
+  computed: {},
   methods: {
     getJobDetail() {
-      let { jobId  } = this.$route.query
+      let { jobId } = this.$route.query
       let params = {
         jobId
-      };
-      console.log(params)
-      findJobApi.getJobDetail(params).then(res => {
-        console.log(res)
-        const { success, message, data } = res;
-      if (success) {
-        this.jobDetail = data
-      } else {
-        this.$message.error(message)
       }
-      });
-    },
+      console.log(params)
+      // findJobApi.getJobDetail(params).then(res => {
+      //   console.log(res)
+      //   const { success, message, data } = res;
+      // if (success) {
+      //   this.jobDetail = data
+      // } else {
+      //   this.$message.error(message)
+      // }
+      // });
+    }
   },
-  created(){
-  },
+  created() {},
   mounted() {
     this.getJobDetail()
-  },
-  
-};
+  }
+}
 </script>
 
-<style  lang='scss'>
+<style lang="scss">
 .job-detail-page {
   background-color: #eaf0f9;
   min-height: calc(100vh - 0px);
@@ -219,17 +329,16 @@ export default {
     .job-list li {
       border: 1px solid #f5f5f5;
       .mid {
-          width: 300px;
+        width: 300px;
 
-          display: flex;
-          img {
-            width: 54px;
-            height: 54px;
-            border-radius: 4px;
-            margin-right: 10px;
-          }
-          
+        display: flex;
+        img {
+          width: 54px;
+          height: 54px;
+          border-radius: 4px;
+          margin-right: 10px;
         }
+      }
     }
   }
   .job-base {
@@ -301,4 +410,3 @@ export default {
   }
 }
 </style>
-

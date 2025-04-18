@@ -20,55 +20,69 @@
         <!-- 职位 -->
         <div class="item filter-job">
           <span class="more-btn" @click="moreWords(1)">
-            {{isExpand1 ? '收起' : '更多'}}
+            {{ isExpand1 ? '收起' : '更多' }}
             <i class="el-icon-arrow-down"></i>
           </span>
           <label>职位：</label>
-          <p :class="['labels info-menu', {expand: isExpand1}]">
-            <span :class="!jobActive && 'el-tag'" @click="handleAll('jobType')">全部</span>
+          <p :class="['labels info-menu', { expand: isExpand1 }]">
+            <span :class="!jobActive && 'el-tag'" @click="handleAll('jobType')"
+              >全部</span
+            >
             <span
-              :class="[jobActive == item.value && 'el-tag'] "
-              v-for="(item,index) in jobTypeArr"
+              :class="[jobActive == item.value && 'el-tag']"
+              v-for="(item, index) in jobTypeArr"
               :key="index"
-              @click="changeJob(item,'职位类型')"
-            >{{item.text}}</span>
+              @click="changeJob(item, '职位类型')"
+              >{{ item.text }}</span
+            >
           </p>
         </div>
         <!-- 地点 -->
         <div class="item filter-address">
           <span class="more-btn" @click="moreWords(2)">
-            {{isExpand2 ? '收起' : '更多'}}
+            {{ isExpand2 ? '收起' : '更多' }}
             <i class="el-icon-arrow-down"></i>
           </span>
           <label>地点：</label>
-          <p :class="['labels info-menu', {expand: isExpand2}]">
-            <span :class="!addressActive && 'el-tag'" @click="handleAll('address')">全部</span>
+          <p :class="['labels info-menu', { expand: isExpand2 }]">
             <span
-              v-for="(item,index) in addressDict"
+              :class="!addressActive && 'el-tag'"
+              @click="handleAll('address')"
+              >全部</span
+            >
+            <span
+              v-for="(item, index) in addressDict"
               :key="index"
               @click="getCities(item)"
-            >{{item.n}}</span>
+              >{{ item.n }}</span
+            >
           </p>
           <p class="cities" v-if="cityArr.length > 0">
             <span
-              :class="[addressActive == item.value && 'el-tag'] "
-              v-for="(item,index) in cityArr"
+              :class="[addressActive == item.value && 'el-tag']"
+              v-for="(item, index) in cityArr"
               :key="index"
-              @click="changeJob(item,'地点')"
-            >{{item.n}}</span>
+              @click="changeJob(item, '地点')"
+              >{{ item.n }}</span
+            >
           </p>
         </div>
         <!-- 薪资 -->
         <div class="item filter-salary pr-0">
           <label>薪资：</label>
           <p class="labels">
-            <span :class="!salaryActive && 'el-tag'" @click="handleAll('salary')">全部</span>
             <span
-              :class="[salaryActive == item.value && 'el-tag'] "
-              v-for="(item,index) in salaryDict"
+              :class="!salaryActive && 'el-tag'"
+              @click="handleAll('salary')"
+              >全部</span
+            >
+            <span
+              :class="[salaryActive == item.value && 'el-tag']"
+              v-for="(item, index) in salaryDict"
               :key="index"
-              @click="changeJob(item,'薪资')"
-            >{{item.label}}</span>
+              @click="changeJob(item, '薪资')"
+              >{{ item.label }}</span
+            >
           </p>
         </div>
       </div>
@@ -78,38 +92,61 @@
     <div class="job-part">
       <!-- 左侧 -->
       <ul class="job-list" v-if="jobList && jobList.length > 0">
-        <li v-for="(item,index) in jobList" :key="index">
+        <li v-for="(item, index) in jobList" :key="index">
           <div class="part-1">
             <div class="left">
-              <el-button class="title" type="text" @click="toJobDetail(item)">{{item.jobTitle}}</el-button>
+              <el-button class="title" type="text" @click="toJobDetail(item)">{{
+                item.jobTitle
+              }}</el-button>
               <p>
-                <span class="salary">{{item.salaryRange === '不限'? '薪资不限' : item.salaryRange}}</span>
-                <span class="label" v-if="item.workCity">{{item.workCity}}</span>
-                <span class="label" v-if="item.workExperience">{{item.workExperience}}年经验</span>
+                <span class="salary">{{
+                  item.salaryRange === '不限' ? '薪资不限' : item.salaryRange
+                }}</span>
+                <span class="label" v-if="item.workCity">{{
+                  item.workCity
+                }}</span>
+                <span class="label" v-if="item.workExperience"
+                  >{{ item.workExperience }}年经验</span
+                >
               </p>
             </div>
             <div class="right">
               <img :src="item.enterpriseLogo" :alt="item.enterpriseName" />
               <div class="comp-mess">
-                <p class="title" @click="toEnterpriseDetail(item)">{{item.enterpriseName}}</p>
-                <span class="label" v-if="item.industry">{{item.industry}}</span>
-                <span class="label" v-if="item.scale">{{item.scale}}人以上</span>
+                <p class="title" @click="toEnterpriseDetail(item)">
+                  {{ item.enterpriseName }}
+                </p>
+                <span class="label" v-if="item.industry">{{
+                  item.industry
+                }}</span>
+                <span class="label" v-if="item.scale"
+                  >{{ item.scale }}人以上</span
+                >
               </div>
             </div>
           </div>
-          <div class="part-2" v-if="item.welfareTags && item.welfareTags.length > 0">
+          <div
+            class="part-2"
+            v-if="item.welfareTags && item.welfareTags.length > 0"
+          >
             <p class="labels">
-              <span v-for="(itemInner,indexInner) in item.welfareTags" :key="indexInner">
-                {{itemInner}}
-                <el-divider direction="vertical" v-if="indexInner < item.welfareTags.length - 1"></el-divider>
+              <span
+                v-for="(itemInner, indexInner) in item.welfareTags"
+                :key="indexInner"
+              >
+                {{ itemInner }}
+                <el-divider
+                  direction="vertical"
+                  v-if="indexInner < item.welfareTags.length - 1"
+                ></el-divider>
               </span>
             </p>
-            <p class="time">{{item.refreshTimeStr}}更新</p>
+            <p class="time">{{ item.refreshTimeStr }}更新</p>
           </div>
         </li>
       </ul>
       <el-empty
-        style="justify-content: flex-start;"
+        style="justify-content: flex-start"
         v-else
         class="margin-center"
         description="暂无职位"
@@ -119,9 +156,13 @@
         <h3 class="hui-title">推荐企业</h3>
         <el-divider></el-divider>
         <ul v-if="enterpriseList && enterpriseList.length > 0">
-          <li v-for="(item,index) in enterpriseList" :key="index" @click="toEnterpriseDetail(item)">
+          <li
+            v-for="(item, index) in enterpriseList"
+            :key="index"
+            @click="toEnterpriseDetail(item)"
+          >
             <img :src="item.enterpriseLogo" :alt="item.enterpriseName" />
-            <p>{{item.enterpriseName}}</p>
+            <p>{{ item.enterpriseName }}</p>
           </li>
         </ul>
         <el-empty v-else description="虚位以待"></el-empty>
@@ -143,16 +184,15 @@
 </template>
 
 <script>
-import findJobApi from "@/api/findJobApi";
-import { jobType as jobTypeArr} from '@/assets/js/dictData'
+// import findJobApi from "@/api/findJobApi";
+import { jobType as jobTypeArr } from '@/assets/js/dictData'
 
 export default {
   data() {
     return {
-      addressDict:[],
       isExpand1: false,
       isExpand2: false,
-      searchName: "",
+      searchName: '',
       dynamicTags: [
         {
           职位类型: [{}]
@@ -168,168 +208,248 @@ export default {
       addressActive: 0,
       salaryActive: 0,
       welfareTags: [],
-      education: "",
-      workExperience: "",
-      scale: "",
-      refreshTimeCycle: "",
+      education: '',
+      workExperience: '',
+      scale: '',
+      refreshTimeCycle: '',
       labelCode: [],
       isEmergency: false,
       checkList1: [
         {
-          label: "紧急职位",
-          value: "true"
+          label: '紧急职位',
+          value: 'true'
         }
       ],
       checkList2: [
         {
-          label: "热门职位",
-          value: "hot"
+          label: '热门职位',
+          value: 'hot'
         }
       ],
       refreshTimeOptions: [
-        { label: "近三天", value: "last_three_day" },
-        { label: "近一周", value: "this_week" },
-        { label: "近一个月", value: "day30" },
-        { label: "全部", value: "" }
+        { label: '近三天', value: 'last_three_day' },
+        { label: '近一周', value: 'this_week' },
+        { label: '近一个月', value: 'day30' },
+        { label: '全部', value: '' }
       ],
       salaryDict: [
         {
           value: 1,
-          label: "1000-3000"
+          label: '1000-3000'
         },
         {
           value: 2,
-          label: "3000-5000"
+          label: '3000-5000'
         },
         {
           value: 3,
-          label: "5000-8000"
+          label: '5000-8000'
         },
         {
           value: 4,
-          label: "8000-12000"
+          label: '8000-12000'
         },
         {
           value: 5,
-          label: "12000-30000"
+          label: '12000-30000'
         },
         {
           value: 6,
-          label: "30000-50000"
+          label: '30000-50000'
         },
         {
           value: 7,
-          label: "50000-80000"
+          label: '50000-80000'
         },
         {
           value: 8,
-          label: "80000-100000"
+          label: '80000-100000'
         }
       ],
       pageNumber: 1,
       pageSize: 10,
-      enterpriseList: [],
+      // 推荐企业模拟数据
+      enterpriseList: [
+        {
+          enterpriseLogo:
+            'https://img.alicdn.com/tfs/TB1Zv8_lxTpK1RjSZFKXXa2wXXa-200-200.png',
+          enterpriseName: '阿里云智能'
+        },
+        {
+          enterpriseLogo: 'https://example.com/damai.png',
+          enterpriseName: '大麦网'
+        },
+        {
+          enterpriseLogo: '',
+          enterpriseName: '新零售科技'
+        }
+      ],
       educationArr: [],
       workExperienceArr: [],
       financingArr: [],
       welfareOptions: [],
       enterpriseScaleArr: [],
       cityArr: [],
-      jobList: [],
+      // 职位列表模拟数据
+      jobList: [
+        {
+          jobId: 1001,
+          jobTitle: '前端开发工程师（紧急）',
+          salaryRange: '15-30K',
+          workCity: '杭州市',
+          workExperience: '3-5年',
+          enterpriseLogo:
+            'https://img.alicdn.com/tfs/TB1Zv8_lxTpK1RjSZFKXXa2wXXa-200-200.png',
+          enterpriseName: '阿里云智能',
+          industry: '云计算',
+          scale: '5000',
+          welfareTags: ['六险一金', '年度体检', '弹性工作'],
+          refreshTimeStr: '30分钟前'
+        },
+        {
+          jobId: 1002,
+          jobTitle: 'Java架构师',
+          salaryRange: '35-60K',
+          workCity: '北京市',
+          workExperience: '8年以上',
+          enterpriseLogo: 'https://example.com/antgroup.png',
+          enterpriseName: '蚂蚁集团',
+          industry: '金融科技',
+          scale: '10000',
+          welfareTags: ['股票期权', '技术大会', '带薪年假'],
+          refreshTimeStr: '2小时前'
+        },
+        {
+          jobId: 1003,
+          jobTitle: 'UI设计师',
+          salaryRange: '不限',
+          workCity: '',
+          workExperience: '1-3年',
+          enterpriseLogo: '',
+          enterpriseName: '创业科技有限公司',
+          industry: '互联网',
+          scale: '50',
+          welfareTags: [],
+          refreshTimeStr: '1天前'
+        }
+      ],
       total: 0,
-      jobType1: "", // 职位类型
-      workCity: "", // 地点
-      jobTypeArr
-    };
+      jobType1: '', // 职位类型
+      workCity: '', // 地点
+      jobTypeArr,
+      addressDict: [
+        {
+          n: '热门城市',
+          l: [
+            { c: 1001, n: '北京' },
+            { c: 1002, n: '上海' }
+          ]
+        },
+        {
+          n: '其他',
+          l: [
+            { c: 2001, n: '杭州' },
+            { c: 2002, n: '成都' }
+          ]
+        }
+      ]
+    }
   },
   mounted() {
-    if(window.__MICRO_APP_ENVIRONMENT__){
+    if (window.__MICRO_APP_ENVIRONMENT__) {
       // 微前端通信
       this.jobTypeArr = window.rawWindow.jobTypeArr
       console.log('微前端环境')
-    }else{
+    } else {
       this.jobTypeArr = jobTypeArr
       console.log('非微前端环境')
     }
     this.getAddressDict()
-    this.searchJobList();
+    this.searchJobList()
   },
   methods: {
     toEnterpriseDetail() {},
     toJobDetail(item) {
       console.log(item)
-      this.$router.push(`/jobDetail?jobId=${item.jobId}`)
+      if (window.__MICRO_APP_ENVIRONMENT__) {
+        window.microApp.router.push({
+          name: 'childJob',
+          path: '/main/childJob#/jobDetail?jobId=1001'
+        })
+      } else {
+        this.$router.push(`/jobDetail?jobId=${item.jobId}`)
+      }
     },
     getCities(e) {
-      this.cityArr = e.l;
+      this.cityArr = e.l
     },
-    getAddressDict(){
-      findJobApi.getAddressDict({}).then(res => {
-        this.addressDict = res
-      });
+    getAddressDict() {
+      // findJobApi.getAddressDict({}).then(res => {
+      //   this.addressDict = res
+      // });
     },
     submitForm(formName) {
-      this.$refs[formName].validate(valid => {
+      this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.searchJobList();
+          this.searchJobList()
         } else {
-          console.log("error submit!!");
-          return false;
+          console.log('error submit!!')
+          return false
         }
-      });
+      })
     },
     handleAll(flag) {
-      if (flag === "jobType") {
-        this.jobActive = false;
-        this.jobType1 = null;
-        this.jobType2 = null;
-        this.jobType3 = null;
-        this.dynamicTags[0]["职位类型"] = [{}];
-      } else if (flag === "address") {
-        this.addressActive = false;
-        this.workCity = null;
-        this.dynamicTags[1]["地点"] = [{}];
-      } else if (flag === "salary") {
-        this.salaryActive = false;
-        this.salaryMin = null;
-        this.salaryMax = null;
-        this.dynamicTags[2]["薪资"] = [{}];
+      if (flag === 'jobType') {
+        this.jobActive = false
+        this.jobType1 = null
+        this.jobType2 = null
+        this.jobType3 = null
+        this.dynamicTags[0]['职位类型'] = [{}]
+      } else if (flag === 'address') {
+        this.addressActive = false
+        this.workCity = null
+        this.dynamicTags[1]['地点'] = [{}]
+      } else if (flag === 'salary') {
+        this.salaryActive = false
+        this.salaryMin = null
+        this.salaryMax = null
+        this.dynamicTags[2]['薪资'] = [{}]
       }
-      this.searchJobList();
+      this.searchJobList()
     },
     handleLabelCode1(e) {
-      this.isEmergency = e;
-      this.searchJobList();
+      this.isEmergency = e
+      this.searchJobList()
     },
     handleLabelCode2(e) {
-      this.labelCode = e;
-      this.searchJobList();
+      this.labelCode = e
+      this.searchJobList()
     },
     handleTime(e) {
-      this.refreshTimeCycle = e;
-      this.searchJobList();
+      this.refreshTimeCycle = e
+      this.searchJobList()
     },
     handleWelfare(e) {
-      this.welfareTags = e;
-      this.searchJobList();
+      this.welfareTags = e
+      this.searchJobList()
     },
     handleEducation(e) {
-      this.education = e;
-      this.searchJobList();
+      this.education = e
+      this.searchJobList()
     },
     handleWorkExperience(e) {
-      this.workExperience = e;
-      this.searchJobList();
+      this.workExperience = e
+      this.searchJobList()
     },
     handleScale(e) {
-      this.scale = e;
-      this.searchJobList();
+      this.scale = e
+      this.searchJobList()
     },
     moreWords(number) {
-      this["isExpand" + number] = !this["isExpand" + number];
+      this['isExpand' + number] = !this['isExpand' + number]
     },
     searchJobList() {
-      let params = {};
+      let params = {}
       let {
         pageSize,
         pageNumber,
@@ -347,89 +467,89 @@ export default {
         labelCode,
         isEmergency,
         searchName
-      } = this;
-      params.listType = "search";
-      params.searchName = searchName;
-      params.pageSize = pageSize;
-      params.pageNumber = pageNumber;
-      params.jobType1 = jobType1;
-      params.jobType2 = jobType2;
-      params.jobType3 = jobType3;
-      params.workCity = workCity;
+      } = this
+      params.listType = 'search'
+      params.searchName = searchName
+      params.pageSize = pageSize
+      params.pageNumber = pageNumber
+      params.jobType1 = jobType1
+      params.jobType2 = jobType2
+      params.jobType3 = jobType3
+      params.workCity = workCity
       params.salaryMin = salaryMin
-      params.salaryMax =salaryMax
-      params.welfareTags = welfareTags;
-      params.education = education;
-      params.workExperience = workExperience;
-      params.scale = scale;
-      params.refreshTimeCycle = refreshTimeCycle;
-      params.isEmergency = isEmergency;
-      params.labelCode = labelCode && labelCode.join(",");
-      findJobApi.searchJobList(params).then(res => {
-        let { data, success, message } = res;
-        if (success) {
-          let { records, total } = data;
-          this.total = total;
-          this.jobList = records;
-          let arr = [...records]
-          this.enterpriseList = arr.splice(0,7)
-        } else {
-          this.$message.error({
-            duration: 1500,
-            message
-          });
-        }
-      });
+      params.salaryMax = salaryMax
+      params.welfareTags = welfareTags
+      params.education = education
+      params.workExperience = workExperience
+      params.scale = scale
+      params.refreshTimeCycle = refreshTimeCycle
+      params.isEmergency = isEmergency
+      params.labelCode = labelCode && labelCode.join(',')
+      // findJobApi.searchJobList(params).then(res => {
+      //   let { data, success, message } = res;
+      //   if (success) {
+      //     let { records, total } = data;
+      //     this.total = total;
+      //     this.jobList = records;
+      //     let arr = [...records]
+      //     this.enterpriseList = arr.splice(0,7)
+      //   } else {
+      //     this.$message.error({
+      //       duration: 1500,
+      //       message
+      //     });
+      //   }
+      // });
     },
     handleSizeChange(val) {
-      this.pageSize = val;
-      this.searchJobList();
+      this.pageSize = val
+      this.searchJobList()
     },
     handleCurrentChange(val) {
-      this.pageNumber = val;
-      this.searchJobList();
+      this.pageNumber = val
+      this.searchJobList()
     },
     changeJob(e, flag) {
-      let obj = {};
-      obj[flag] = [];
-      if (flag === "职位类型") {
-        e.label = e.text;
-        this.jobActive = e.value;
-        let { level } = this.$route.query;
+      let obj = {}
+      obj[flag] = []
+      if (flag === '职位类型') {
+        e.label = e.text
+        this.jobActive = e.value
+        let { level } = this.$route.query
         if (level == 2) {
-          this.jobType2 = e.value;
+          this.jobType2 = e.value
         } else if (level == 3) {
-          this.jobType3 = e.value;
+          this.jobType3 = e.value
         } else {
-          this.jobType1 = e.value;
+          this.jobType1 = e.value
         }
-        obj[flag].push(e);
-        this.dynamicTags[0] = obj;
-      } else if (flag === "地点") {
-        e.value = e.c;
-        e.label = e.n;
-        this.addressActive = e.c;
-        this.workCity = e.n;
-        obj[flag].push(e);
-        this.dynamicTags[1] = obj;
-      } else if (flag === "薪资") {
-        this.salaryActive = e.value;
-        let arr = e.label.split("-");
-        this.salaryMin = arr[0];
-        this.salaryMax = arr[1];
-        obj[flag].push(e);
-        this.dynamicTags[2] = obj;
+        obj[flag].push(e)
+        this.dynamicTags[0] = obj
+      } else if (flag === '地点') {
+        e.value = e.c
+        e.label = e.n
+        this.addressActive = e.c
+        this.workCity = e.n
+        obj[flag].push(e)
+        this.dynamicTags[1] = obj
+      } else if (flag === '薪资') {
+        this.salaryActive = e.value
+        let arr = e.label.split('-')
+        this.salaryMin = arr[0]
+        this.salaryMax = arr[1]
+        obj[flag].push(e)
+        this.dynamicTags[2] = obj
       }
-      this.searchJobList();
+      this.searchJobList()
     },
     changeSelect(e) {
-      this.homeSelectValue = e;
+      this.homeSelectValue = e
     }
   }
-};
+}
 </script>
 
-<style  lang="scss">
+<style lang="scss">
 .find-job-page {
   padding-bottom: 15px;
   background-color: #eaf0f9;
@@ -437,7 +557,7 @@ export default {
   position: relative;
   .header-search-outer {
     background-image: url(~@/assets/images/banner_job.jpg);
-    margin-bottom:15px;
+    margin-bottom: 15px;
   }
   .search-header {
     border-radius: 4px;
@@ -495,7 +615,7 @@ export default {
             border-radius: 6px;
             background-color: #f5f5f5;
             padding: 10px 15px;
-            text-align:left;
+            text-align: left;
             span {
               margin-right: 15px;
               font-size: 4px;
@@ -524,12 +644,12 @@ export default {
           font-weight: bold;
           position: absolute;
           top: 4px;
-          left:0;
+          left: 0;
         }
         .labels {
           display: flex;
           flex-wrap: wrap;
-          padding-left:50px;
+          padding-left: 50px;
           & > span {
             font-size: 13px;
             color: #666666;
