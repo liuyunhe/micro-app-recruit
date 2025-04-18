@@ -5,7 +5,7 @@ export default defineNuxtConfig({
   app: {
     baseURL: '/main/',
     head: {
-      title: 'child-nuxt2-home',
+      title: 'child-nuxt3-home',
       htmlAttrs: {
         lang: 'en'
       },
@@ -27,5 +27,17 @@ export default defineNuxtConfig({
         }
       }
     }
-  }
+  },
+  alias: {
+    '@': '/'
+  },
+  build: {
+    transpile: [/^element-plus/]
+  },
+  // Global CSS: https://go.nuxtjs.dev/config-css
+  css: ['element-plus/dist/index.css', 'element-plus/theme-chalk/display.css','./assets/sass/main.scss'],
+
+  // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
+
+  modules: ['@element-plus/nuxt']
 })
