@@ -21,6 +21,8 @@ const afterhidden = () => {
 }
 const beforeshow = () => {
   console.log('子应用推入前台之前')
+  const routeInfo = ma.router.current.get('childEnterprise')
+  console.log(routeInfo)
 }
 const aftershow = () => {
   console.log('子应用推入前台')
@@ -37,7 +39,6 @@ const aftershow = () => {
     </micro-app> -->
     <!-- 第二种方式 -->
     <micro-app
-      keep-alive
       name="childEnterprise"
       url="http://localhost:3002/child/findEnterprise#/"
       @unmount="unmount"

@@ -24,12 +24,12 @@ microApp.start({
     //   url: 'http://localhost:8080',
     //   level: 3
     // },
-    {
-      name: 'childEnterprise',
-      url: 'http://localhost:3002/child/findEnterprise#/',
-      iframe: true, // 使用iframe渲染子应用
-      level: 3
-    },
+    // {
+    //   name: 'childEnterprise',
+    //   url: 'http://localhost:3002/child/findEnterprise#/',
+    //   iframe: true, // 使用iframe渲染子应用
+    //   level: 3
+    // },
     // {
     //   name: 'childAbout',
     //   url: 'http://localhost:3003',

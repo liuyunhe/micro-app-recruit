@@ -18,6 +18,7 @@ import microApp from '@micro-zoe/micro-app'
       keep-alive
       @datachange="handleDataChange"
     ></micro-app>
+    
   </div>
 </template>
 

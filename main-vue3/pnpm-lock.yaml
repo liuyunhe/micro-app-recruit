@@ -6,7 +6,7 @@ settings:
 
 dependencies:
   '@micro-zoe/micro-app':
-    specifier: ^1.0.0-beta.4
+    specifier: 1.0.0-rc.24
     version: 1.0.0-rc.24
   axios:
     specifier: ^1.4.0
