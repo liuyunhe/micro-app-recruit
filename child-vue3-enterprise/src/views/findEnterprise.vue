@@ -1,82 +1,145 @@
 <script setup>
-import { watch, ref, onMounted, reactive,getCurrentInstance } from "vue";
-import findEnterpriseApi from "@/api/findEnterpriseApi";
-import { useRoute,useRouter } from "vue-router";
+import { watch, ref, onMounted, reactive, getCurrentInstance } from 'vue'
+import findEnterpriseApi from '@/api/findEnterpriseApi'
+import { useRoute, useRouter } from 'vue-router'
 
 const { proxy } = getCurrentInstance()
-const route = useRoute();
-const router = useRouter();
+const route = useRoute()
+const router = useRouter()
 const isExpand2 = ref(false)
 const state = reactive({
-  addressDict:[],
-  cityArr:[],
-  enterList: [{name:123}],
-  enterpriseList:[],
-  total:0,
-  pageSize:10,
-  pageNumber:1
-})
-const enterpriseScaleArr =  reactive([
+  addressDict: [],
+  cityArr: [],
+  enterList: [
     {
-        "label": "50人以下",
-        "value": "50"
+      id: 10001,
+      name: '阿里云智能',
+      logo: 'https://img.alicdn.com/tfs/TB1Zv8_lxTpK1RjSZFKXXa2wXXa-200-200.png',
+      industry: '云计算',
+      scale: '1000',
+      welfareTag: ['六险一金', '年度体检', '弹性工作'],
+      jobTitle: '高级Java开发',
+      salaryRange: '30-50K'
     },
     {
-        "label": "51-100人",
-        "value": "100"
+      id: 10002,
+      name: '蚂蚁集团',
+      logo: 'https://example.com/antgroup.png',
+      industry: '金融科技',
+      scale: '5000',
+      welfareTag: ['股票期权', '技术培训', '带薪年假'],
+      jobTitle: '前端架构师',
+      salaryRange: '35-60K'
     },
     {
-        "label": "101-200人",
-        "value": "200"
-    },
-    {
-        "label": "201-500人",
-        "value": "500"
-    },
-    {
-        "label": "501-1000人",
-        "value": "1000"
-    },
-    {
-        "label": "1000人以上",
-        "value": "1001"
+      id: 10003,
+      name: '创业科技',
+      logo: '',
+      industry: '互联网',
+      scale: '50',
+      welfareTag: [],
+      jobTitle: 'UI设计师',
+      salaryRange: '不限'
     }
-]);
+  ],
+  // 推荐企业数据（自动从enterList截取）
+  enterpriseList: [
+    {
+      id: 10001,
+      name: '阿里云智能',
+      logo: 'https://img.alicdn.com/tfs/TB1Zv8_lxTpK1RjSZFKXXa2wXXa-200-200.png'
+    },
+    {
+      id: 10002,
+      name: '蚂蚁集团',
+      logo: 'https://example.com/antgroup.png'
+    }
+  ],
+
+  // 筛选条件数据
+  addressDict: [
+    {
+      n: '热门城市',
+      l: [
+        { c: 1001, n: '北京', lat: 39.9042, lng: 116.4074 },
+        { c: 1002, n: '上海', lat: 31.2304, lng: 121.4737 }
+      ]
+    },
+    {
+      n: '新一线',
+      l: [
+        { c: 2001, n: '杭州', lat: 30.2741, lng: 120.1551 },
+        { c: 2002, n: '成都', lat: 30.5728, lng: 104.0668 }
+      ]
+    }
+  ],
+
+  // 分页数据
+  total: 35,
+  pageSize: 10,
+  pageNumber: 1
+})
+const enterpriseScaleArr = reactive([
+  {
+    label: '50人以下',
+    value: '50'
+  },
+  {
+    label: '51-100人',
+    value: '100'
+  },
+  {
+    label: '101-200人',
+    value: '200'
+  },
+  {
+    label: '201-500人',
+    value: '500'
+  },
+  {
+    label: '501-1000人',
+    value: '1000'
+  },
+  {
+    label: '1000人以上',
+    value: '1001'
+  }
+])
 
 const welfareOptions = reactive([
-    {
-        "label": "加班补贴",
-        "value": "加班补贴"
-    },
-    {
-        "label": "交通补贴",
-        "value": "交通补贴"
-    },
-    {
-        "label": "住房补贴",
-        "value": "住房补贴"
-    },
-    {
-        "label": "包住",
-        "value": "包住"
-    },
-    {
-        "label": "双休",
-        "value": "双休"
-    },
-    {
-        "label": "包吃",
-        "value": "包吃"
-    },
-    {
-        "label": "带薪年假",
-        "value": "带薪年假"
-    },
-    {
-        "label": "年终奖",
-        "value": "年终奖"
-    }
-]);
+  {
+    label: '加班补贴',
+    value: '加班补贴'
+  },
+  {
+    label: '交通补贴',
+    value: '交通补贴'
+  },
+  {
+    label: '住房补贴',
+    value: '住房补贴'
+  },
+  {
+    label: '包住',
+    value: '包住'
+  },
+  {
+    label: '双休',
+    value: '双休'
+  },
+  {
+    label: '包吃',
+    value: '包吃'
+  },
+  {
+    label: '带薪年假',
+    value: '带薪年假'
+  },
+  {
+    label: '年终奖',
+    value: '年终奖'
+  }
+])
 
 const addressActive = ref(0)
 const enterpriseScaleActive = ref(0)
@@ -87,18 +150,18 @@ const welfareTag = ref('')
 const searchName = ref('')
 
 onMounted(() => {
-  getAddressDict();
-  searchEnterprisePage();
-  console.log("获取全局数据", route.query);
-});
+  getAddressDict()
+  searchEnterprisePage()
+  console.log('获取全局数据', route)
+})
 
-const handleClick = () => { 
+const handleClick = () => {
   /**
    * 微前端环境通信处理逻辑：
    * 1. 检测是否处于微前端容器环境中(__MICRO_APP_ENVIRONMENT__)
    * 2. 触发调试断点便于调试微应用通信
    * 3. 向基座应用派发当前激活的页面标识
-   * 
+   *
    * @remarks
    * - 使用 window.microApp.dispatch 进行微应用间通信
    * - activeIndex: 'job' 表示当前激活的是职位相关页面，用于基座应用状态同步
@@ -106,106 +169,107 @@ const handleClick = () => {
   if (window.__MICRO_APP_ENVIRONMENT__) {
     debugger
     window.microApp.dispatch({
-      activeIndex:'job'
+      activeIndex: 'job'
     })
   }
 }
 
-const handleJump = () => { 
+const handleJump = () => {
   // const baseRouter = window.microApp.router.getBaseAppRouter()
   // baseRouter.push("/main/login")
   console.log(window.microApp.router)
-  window.microApp.router.push({name: 'childEnterprise', path: '/main/childEnterprise#/enterpriseDetail?enterpriseId=undefined'})
+  window.microApp.router.push({
+    name: 'childEnterprise',
+    path: '/main/childEnterprise#/enterpriseDetail?enterpriseId=undefined'
+  })
 }
 
 function searchEnterprisePage() {
-  const params = {
-    pageNumber: state.pageNumber,
-    pageSize: state.pageSize,
-    city:city.value,
-    scale:scale.value,
-    welfareTag:welfareTag.value,
-    searchName:searchName.value
-  };
-
-  findEnterpriseApi.searchEnterprisePage(params).then(res => {
-    console.log(res);
-    const { success, message,data } = res;
-    if (success) {
-      let {records,total} = data
-      records && records.filter(item=>{
-       item.welfareTag = item.welfareTag && item.welfareTag.split(",");
-      })
-      state.enterList = records
-      state.total = total
-       let arr = [...records]
-       state.enterpriseList = arr.splice(0,7)
-     console.log(state.enterList)
-    } else {
-      proxy.$message.error(message)
-    }
-  });
+  // const params = {
+  //   pageNumber: state.pageNumber,
+  //   pageSize: state.pageSize,
+  //   city:city.value,
+  //   scale:scale.value,
+  //   welfareTag:welfareTag.value,
+  //   searchName:searchName.value
+  // };
+  // findEnterpriseApi.searchEnterprisePage(params).then(res => {
+  //   console.log(res);
+  //   const { success, message,data } = res;
+  //   if (success) {
+  //     let {records,total} = data
+  //     records && records.filter(item=>{
+  //      item.welfareTag = item.welfareTag && item.welfareTag.split(",");
+  //     })
+  //     state.enterList = records
+  //     state.total = total
+  //      let arr = [...records]
+  //      state.enterpriseList = arr.splice(0,7)
+  //    console.log(state.enterList)
+  //   } else {
+  //     proxy.$message.error(message)
+  //   }
+  // });
 }
 
 function handleAll(flag) {
-      if (flag === "address") {
-        addressActive.value = false;
-        city.value = null;
-      } else if (flag === "enterpriseScale") {
-        enterpriseScaleActive.value = false;
-        scale.value = null;
-      } else if (flag === "welfareTags") {
-        welfareTagsActive.value = false;
-        welfareTag.value = null;
-      }
-      searchEnterprisePage();
-    }
+  if (flag === 'address') {
+    addressActive.value = false
+    city.value = null
+  } else if (flag === 'enterpriseScale') {
+    enterpriseScaleActive.value = false
+    scale.value = null
+  } else if (flag === 'welfareTags') {
+    welfareTagsActive.value = false
+    welfareTag.value = null
+  }
+  searchEnterprisePage()
+}
 
 function getAddressDict() {
-  findEnterpriseApi.getAddressDict({}).then(res => {
-    console.log(res);
-    state.addressDict = res;
-     console.log(state.addressDict);
-  });
+  // findEnterpriseApi.getAddressDict({}).then(res => {
+  //   console.log(res);
+  //   state.addressDict = res;
+  //    console.log(state.addressDict);
+  // });
 }
 
 function getCities(e) {
-  state.cityArr = e.l;
+  state.cityArr = e.l
 }
 
-
-   function changeJob(e, flag) {
-      if (flag === "地点") {
-        e.value = e.c;
-        e.label = e.n;
-        addressActive.value = e.c;
-        city.value = e.n;
-      } else if (flag === "规模") {
-        enterpriseScaleActive.value = e.value;
-        scale.value = e.value;
-      } else if (flag === "福利") {
-        welfareTagsActive.value = e.value;
-        welfareTag.value = e.value;
-      }
-      searchEnterprisePage();
-    }
+function changeJob(e, flag) {
+  if (flag === '地点') {
+    e.value = e.c
+    e.label = e.n
+    addressActive.value = e.c
+    city.value = e.n
+  } else if (flag === '规模') {
+    enterpriseScaleActive.value = e.value
+    scale.value = e.value
+  } else if (flag === '福利') {
+    welfareTagsActive.value = e.value
+    welfareTag.value = e.value
+  }
+  searchEnterprisePage()
+}
 
 function handleSizeChange(val) {
-      state.pageSize = val;
-      searchEnterprisePage();
-    }
-   function  handleCurrentChange(val) {
-      state.pageNumber = val;
-      searchEnterprisePage();
-    }
-    function toEnterpriseDetail(item){
-      let { id } = item
-      router.push(`/enterpriseDetail?enterpriseId=${item.id}`)
-    }
+  state.pageSize = val
+  searchEnterprisePage()
+}
+function handleCurrentChange(val) {
+  state.pageNumber = val
+  searchEnterprisePage()
+}
+function toEnterpriseDetail(item) {
+  let { id } = item
+  router.push(`/enterpriseDetail?enterpriseId=${item.id}`)
+}
 
-    function moreWords(){
-       isExpand2.value = !isExpand2.value
-    }
+function moreWords() {
+  isExpand2.value = !isExpand2.value
+}
 </script>
 
 <template>
@@ -219,9 +283,9 @@ function handleSizeChange(val) {
           clearable
           @clear="searchEnterprisePage"
         >
-         <template #append>
-          <el-button @click="searchEnterprisePage">搜索</el-button>
-         </template>
+          <template #append>
+            <el-button @click="searchEnterprisePage">搜索</el-button>
+          </template>
         </el-input>
       </div>
     </div>
@@ -232,25 +296,31 @@ function handleSizeChange(val) {
         <!-- 地点 -->
         <div class="item filter-address">
           <span class="more-btn" @click="moreWords(2)">
-            {{isExpand2 ? '收起' : '更多'}}
+            {{ isExpand2 ? '收起' : '更多' }}
             <i class="el-icon-arrow-down"></i>
           </span>
           <label>地点：</label>
-          <p :class="['labels info-menu', {expand: isExpand2}]">
-            <span :class="!addressActive && 'el-tag'" @click="handleAll('address')">全部</span>
+          <p :class="['labels info-menu', { expand: isExpand2 }]">
             <span
-              v-for="(item,index) in state.addressDict"
+              :class="!addressActive && 'el-tag'"
+              @click="handleAll('address')"
+              >全部</span
+            >
+            <span
+              v-for="(item, index) in state.addressDict"
               :key="index"
               @click="getCities(item)"
-            >{{item.n}}</span>
+              >{{ item.n }}</span
+            >
           </p>
           <p class="cities" v-if="state.cityArr.length > 0">
             <span
-              :class="[addressActive == item.value && 'el-tag'] "
-              v-for="(item,index) in state.cityArr"
+              :class="[addressActive == item.value && 'el-tag']"
+              v-for="(item, index) in state.cityArr"
               :key="index"
-              @click="changeJob(item,'地点')"
-            >{{item.n}}</span>
+              @click="changeJob(item, '地点')"
+              >{{ item.n }}</span
+            >
           </p>
         </div>
         <!-- 规模 -->
@@ -260,26 +330,33 @@ function handleSizeChange(val) {
             <span
               :class="!enterpriseScaleActive && 'el-tag'"
               @click="handleAll('enterpriseScale')"
-            >全部</span>
+              >全部</span
+            >
             <span
-              :class="[enterpriseScaleActive == item.value && 'el-tag'] "
-              v-for="(item,index) in enterpriseScaleArr"
+              :class="[enterpriseScaleActive == item.value && 'el-tag']"
+              v-for="(item, index) in enterpriseScaleArr"
               :key="index"
-              @click="changeJob(item,'规模')"
-            >{{item.label}}</span>
+              @click="changeJob(item, '规模')"
+              >{{ item.label }}</span
+            >
           </p>
         </div>
         <!-- 福利 -->
         <div class="item filter-select">
           <label>福利：</label>
           <p class="labels">
-            <span :class="!welfareTagsActive && 'el-tag'" @click="handleAll('welfareTags')">全部</span>
             <span
-              :class="[welfareTagsActive == item.value && 'el-tag'] "
-              v-for="(item,index) in welfareOptions"
+              :class="!welfareTagsActive && 'el-tag'"
+              @click="handleAll('welfareTags')"
+              >全部</span
+            >
+            <span
+              :class="[welfareTagsActive == item.value && 'el-tag']"
+              v-for="(item, index) in welfareOptions"
               :key="index"
-              @click="changeJob(item,'福利')"
-            >{{item.label}}</span>
+              @click="changeJob(item, '福利')"
+              >{{ item.label }}</span
+            >
           </p>
         </div>
       </div>
@@ -288,17 +365,30 @@ function handleSizeChange(val) {
     <!-- 表格 -->
     <div class="enter-part mt-15">
       <!-- 左侧 -->
-      <ul class="enter-list" v-if="state.enterList && state.enterList.length > 0">
-        <li v-for="(item,index) in state.enterList" :key="index">
+      <ul
+        class="enter-list"
+        v-if="state.enterList && state.enterList.length > 0"
+      >
+        <li v-for="(item, index) in state.enterList" :key="index">
           <div class="part-1">
             <img v-if="item.logo" :src="item.logo" :alt="item.enterpriseName" />
-            <img v-else src="../assets/images/findEnterprise/default_company.png" :alt="item.name" />
+            <img
+              v-else
+              src="../assets/images/findEnterprise/default_company.png"
+              :alt="item.name"
+            />
             <div class="flex-layout">
               <div class="comp-mess">
-                <p class="title" @click="toEnterpriseDetail(item)">{{item.name}}</p>
+                <p class="title" @click="toEnterpriseDetail(item)">
+                  {{ item.name }}
+                </p>
                 <p>
-                  <span class="label" v-if="item.industry">{{item.industry}}</span>
-                  <span class="label" v-if="item.scale">{{item.scale}}人以上</span>
+                  <span class="label" v-if="item.industry">{{
+                    item.industry
+                  }}</span>
+                  <span class="label" v-if="item.scale"
+                    >{{ item.scale }}人以上</span
+                  >
                 </p>
               </div>
               <p class="hot">
@@ -324,23 +414,34 @@ function handleSizeChange(val) {
                   />
                 </svg>
                 热招
-                <span class="orange">{{item.jobTitle}}</span>
-                {{item.salaryRange === '不限'? '薪资不限' : item.salaryRange}}
+                <span class="orange">{{ item.jobTitle }}</span>
+                {{
+                  item.salaryRange === '不限' ? '薪资不限' : item.salaryRange
+                }}
               </p>
             </div>
           </div>
-          <div class="part-2" v-if="item.welfareTag && item.welfareTag.length > 0">
+          <div
+            class="part-2"
+            v-if="item.welfareTag && item.welfareTag.length > 0"
+          >
             <p class="labels">
-              <span v-for="(itemInner,indexInner) in item.welfareTag" :key="indexInner">
-                {{itemInner}}
-                <el-divider direction="vertical" v-if="indexInner < item.welfareTag.length - 1"></el-divider>
+              <span
+                v-for="(itemInner, indexInner) in item.welfareTag"
+                :key="indexInner"
+              >
+                {{ itemInner }}
+                <el-divider
+                  direction="vertical"
+                  v-if="indexInner < item.welfareTag.length - 1"
+                ></el-divider>
               </span>
             </p>
           </div>
         </li>
       </ul>
       <el-empty
-        style="justify-content: flex-start;"
+        style="justify-content: flex-start"
         v-else
         class="margin-center mtv-"
         description="暂无企业"
@@ -350,9 +451,13 @@ function handleSizeChange(val) {
         <h3 class="hui-title" @click="handleClick">推荐企业</h3>
         <el-divider></el-divider>
         <ul v-if="state.enterpriseList && state.enterpriseList.length > 0">
-          <li v-for="(item,index) in state.enterpriseList" :key="index" @click="toEnterpriseDetail(item)">
+          <li
+            v-for="(item, index) in state.enterpriseList"
+            :key="index"
+            @click="toEnterpriseDetail(item)"
+          >
             <img :src="item.logo" :alt="item.name" />
-            <p>{{item.name}}</p>
+            <p>{{ item.name }}</p>
           </li>
         </ul>
         <el-empty v-else description="虚位以待"></el-empty>
@@ -382,8 +487,8 @@ function handleSizeChange(val) {
   position: relative;
   .header-search-outer {
     background-image: url(../assets/images/findEnterprise/banner_enterprise.jpg);
-    .el-input-group__append{
-      box-shadow:none
+    .el-input-group__append {
+      box-shadow: none;
     }
   }
   .search-header {
@@ -391,7 +496,7 @@ function handleSizeChange(val) {
     background-color: #fff;
     padding: 30px 30px 15px 30px;
     box-sizing: border-box;
-    margin-top:15px;
+    margin-top: 15px;
     .selected-div {
       position: relative;
       label {

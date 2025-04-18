@@ -1,38 +1,81 @@
 <script setup>
-import findEnterpriseApi from "@/api/findEnterpriseApi";
-import { reactive ,onMounted,getCurrentInstance} from 'vue'
-import { useRoute,useRouter } from "vue-router";
+import findEnterpriseApi from '@/api/findEnterpriseApi'
+import { reactive, onMounted, getCurrentInstance } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
-const route = useRoute();
-const enterpriseData  = reactive({
-  enterpriseJobList:[],
-  enterpriseDetail:{}
+const route = useRoute()
+const enterpriseData = reactive({
+  enterpriseDetail: {
+    enterpriseLogo:
+      'https://img.alicdn.com/tfs/TB1Zv8_lxTpK1RjSZFKXXa2wXXa-200-200.png',
+    enterpriseName: '阿里云智能',
+    scale: '1000',
+    enterpriseIndustry: '云计算',
+    welfareTagList: ['六险一金', '年度体检', '弹性工作', '技术培训'],
+    enterpriseIntroduction:
+      '全球领先的云计算及人工智能科技公司，致力于以在线公共服务的方式，提供安全、可靠的计算和数据处理能力。',
+    address: '浙江省杭州市西湖区网商路699号',
+    photos: [
+      'https://example.com/office1.jpg',
+      'https://example.com/office2.jpg',
+      'https://example.com/office3.jpg'
+    ]
+  },
+  enterpriseJobList: [
+    {
+      jobTitle: '资深前端开发工程师（紧急）',
+      salaryRange: '30-50K',
+      workProvince: '浙江省',
+      workCity: '杭州市',
+      workExperience: '5-8年',
+      labels: ['紧急', '热门'],
+      enterpriseLogo:
+        'https://img.alicdn.com/tfs/TB1Zv8_lxTpK1RjSZFKXXa2wXXa-200-200.png',
+      industry: '云计算',
+      scale: '1000',
+      welfareTags: ['技术分享会', '年度旅游', '股票期权'],
+      refreshTimeStr: '2小时前'
+    },
+    {
+      jobTitle: 'DevOps工程师',
+      salaryRange: '25-40K',
+      workProvince: '浙江省',
+      workCity: '',
+      workExperience: '不限',
+      labels: ['新职位'],
+      enterpriseLogo: '',
+      industry: '云计算',
+      scale: '1000',
+      welfareTags: ['弹性工作制', '带薪年假'],
+      refreshTimeStr: '1天前'
+    }
+  ]
 })
 const { proxy } = getCurrentInstance()
 
 onMounted(() => {
-  getEnterpriseDetail();
-});
+  getEnterpriseDetail()
+})
 
 function getEnterpriseDetail() {
-      let { enterpriseId  } = route.query
-      let params = {
-        enterpriseId
-      };
-      console.log(params)
-      findEnterpriseApi.getEnterpriseDetail(params).then(res => {
-        console.log(res)
-        const { success, message, data } = res;
-      if (success) {
-        let { enterpriseJobList } = data 
-        enterpriseData.enterpriseJobList = enterpriseJobList
-        enterpriseData.enterpriseDetail = data
-      } else {
-        proxy.$message.error(message)
-      }
-      });
-    }
-
+  console.log(route)
+  let { enterpriseId } = route.query
+  let params = {
+    enterpriseId
+  }
+  console.log(params)
+  // findEnterpriseApi.getEnterpriseDetail(params).then(res => {
+  //   console.log(res)
+  //   const { success, message, data } = res;
+  // if (success) {
+  //   let { enterpriseJobList } = data
+  //   enterpriseData.enterpriseJobList = enterpriseJobList
+  //   enterpriseData.enterpriseDetail = data
+  // } else {
+  //   proxy.$message.error(message)
+  // }
+  // });
+}
 </script>
 
 <template>
@@ -40,25 +83,30 @@ function getEnterpriseDetail() {
     <div class="enterprise-base">
       <div class="w-1200-auto relative">
         <div class="mess">
-          <img :src="enterpriseData.enterpriseDetail.enterpriseLogo" :alt="enterpriseData.enterpriseDetail.enterpriseName" />
+          <img
+            :src="enterpriseData.enterpriseDetail.enterpriseLogo"
+            :alt="enterpriseData.enterpriseDetail.enterpriseName"
+          />
           <div>
-            <h2>{{enterpriseData.enterpriseDetail.enterpriseName}}</h2>
+            <h2>{{ enterpriseData.enterpriseDetail.enterpriseName }}</h2>
             <p class="labels">
               <span title="企业规模">
                 <i class="el-icon-medal"></i>
-                {{enterpriseData.enterpriseDetail.scale+'人以上' }}
+                {{ enterpriseData.enterpriseDetail.scale + '人以上' }}
               </span>
               <span title="所在行业">
                 <i class="el-icon-office-building"></i>
-                {{enterpriseData.enterpriseDetail.enterpriseIndustry || '-'}}
+                {{ enterpriseData.enterpriseDetail.enterpriseIndustry || '-' }}
               </span>
             </p>
             <p class="tags">
               <el-tag
                 size="small"
-                v-for="(item,index) in enterpriseData.enterpriseDetail.welfareTagList"
+                v-for="(item, index) in enterpriseData.enterpriseDetail
+                  .welfareTagList"
                 :key="index"
-              >{{item}}</el-tag>
+                >{{ item }}</el-tag
+              >
             </p>
           </div>
         </div>
@@ -69,14 +117,16 @@ function getEnterpriseDetail() {
       <div class="detail-l">
         <div class="detail-card">
           <h3 class="hui-title">公司简介</h3>
-          <p class="cont">{{enterpriseData.enterpriseDetail.enterpriseIntroduction}}</p>
+          <p class="cont">
+            {{ enterpriseData.enterpriseDetail.enterpriseIntroduction }}
+          </p>
         </div>
 
         <div class="detail-card">
           <h3 class="hui-title">公司地址</h3>
           <p class="mt-15 f-14">
             <i class="el-icon-location-information f-16"></i>
-            {{enterpriseData.enterpriseDetail.address }}
+            {{ enterpriseData.enterpriseDetail.address }}
           </p>
         </div>
 
@@ -84,27 +134,44 @@ function getEnterpriseDetail() {
           <h3 class="hui-title">该公司招聘职位</h3>
           <!-- 表格 -->
           <div class="job-part">
-            <ul class="job-list" v-if="enterpriseData.enterpriseJobList.length > 0">
-              <li v-for="(item,index) in enterpriseData.enterpriseJobList" :key="index">
+            <ul
+              class="job-list"
+              v-if="enterpriseData.enterpriseJobList.length > 0"
+            >
+              <li
+                v-for="(item, index) in enterpriseData.enterpriseJobList"
+                :key="index"
+              >
                 <div class="part-1">
                   <div class="left">
-                    <el-button class="title" type="text" >
-                      {{item.jobTitle}}
+                    <el-button class="title" type="text">
+                      {{ item.jobTitle }}
                       <el-tag
                         class="ml-10"
                         size="mini"
-                        v-for="(a,index) in item.labels"
+                        v-for="(a, index) in item.labels"
                         :key="index"
-                        :type="a.indexOf('紧急') !==  -1 && 'danger' || a.indexOf('热门') !==  -1 &&  'warning'"
-                      >{{a}}</el-tag>
+                        :type="
+                          (a.indexOf('紧急') !== -1 && 'danger') ||
+                          (a.indexOf('热门') !== -1 && 'warning')
+                        "
+                        >{{ a }}</el-tag
+                      >
                     </el-button>
                     <p>
-                      <span class="salary">{{item.salaryRange === '不限'? '薪资不限' : item.salaryRange}}</span>
-                      <span
-                        class="label"
-                        v-if="item.workCity"
-                      >{{item.workProvince}} {{item.workCity}}</span>
-                      <span class="label" v-if="item.workExperience">{{item.workExperience=== '不限'? '经历不限' : item.workExperience+'年工作经验'}}</span>
+                      <span class="salary">{{
+                        item.salaryRange === '不限'
+                          ? '薪资不限'
+                          : item.salaryRange
+                      }}</span>
+                      <span class="label" v-if="item.workCity"
+                        >{{ item.workProvince }} {{ item.workCity }}</span
+                      >
+                      <span class="label" v-if="item.workExperience">{{
+                        item.workExperience === '不限'
+                          ? '经历不限'
+                          : item.workExperience + '年工作经验'
+                      }}</span>
                     </p>
                   </div>
                   <div class="mid">
@@ -119,20 +186,27 @@ function getEnterpriseDetail() {
                       :alt="item.enterpriseName"
                     />
                     <div class="comp-mess">
-                      <p class="title">{{item.enterpriseName}}</p>
-                      <span class="label" v-if="item.industry">{{item.industry}}</span>
-                      <span class="label" v-if="item.scale">{{item.scale}}人以上</span>
+                      <p class="title">{{ item.enterpriseName }}</p>
+                      <span class="label" v-if="item.industry">{{
+                        item.industry
+                      }}</span>
+                      <span class="label" v-if="item.scale"
+                        >{{ item.scale }}人以上</span
+                      >
                     </div>
                   </div>
                 </div>
                 <div class="part-2">
                   <p class="labels">
-                    <span v-for="(itemInner,indexInner) in item.welfareTags" :key="indexInner">
-                      {{itemInner}}
+                    <span
+                      v-for="(itemInner, indexInner) in item.welfareTags"
+                      :key="indexInner"
+                    >
+                      {{ itemInner }}
                       <el-divider direction="vertical"></el-divider>
                     </span>
                   </p>
-                  <p class="time">{{item.refreshTimeStr}}</p>
+                  <p class="time">{{ item.refreshTimeStr }}</p>
                 </div>
               </li>
               <template v-if="total > 0">
@@ -143,17 +217,26 @@ function getEnterpriseDetail() {
                   @click="moreJob"
                   plain
                   :loading="loadingBtn"
-                >查看更多</el-button>
+                  >查看更多</el-button
+                >
                 <el-button
-                  v-else-if="enterpriseData.enterpriseJobList.length === total && total > 10"
+                  v-else-if="
+                    enterpriseData.enterpriseJobList.length === total &&
+                    total > 10
+                  "
                   class="w-350-auto is-disabled"
                   type="primary"
                   disabled
                   plain
-                >已加载全部</el-button>
+                  >已加载全部</el-button
+                >
               </template>
             </ul>
-            <el-empty v-else class="margin-center" description="暂无职位"></el-empty>
+            <el-empty
+              v-else
+              class="margin-center"
+              description="暂无职位"
+            ></el-empty>
           </div>
         </div>
       </div>
@@ -164,25 +247,32 @@ function getEnterpriseDetail() {
           <div class="card-mess">
             <div
               class="imgs-wall"
-              v-if="enterpriseData.enterpriseDetail.photos && enterpriseData.enterpriseDetail.photos.length > 0"
+              v-if="
+                enterpriseData.enterpriseDetail.photos &&
+                enterpriseData.enterpriseDetail.photos.length > 0
+              "
             >
               <img
                 @click="preview(item)"
-                v-for="(item,index) in enterpriseData.enterpriseDetail.photos"
+                v-for="(item, index) in enterpriseData.enterpriseDetail.photos"
                 :key="index"
                 :src="item"
                 :alt="enterpriseData.enterpriseDetail.enterpriseName"
               />
             </div>
-            <el-empty v-else class="margin-center" description="暂无公司图片"></el-empty>
+            <el-empty
+              v-else
+              class="margin-center"
+              description="暂无公司图片"
+            ></el-empty>
           </div>
         </div>
       </div>
     </div>
-    </section>
+  </section>
 </template>
 
-<style  lang='scss'>
+<style lang="scss">
 .enterprise-detail-page {
   padding-bottom: 20px;
   background-color: #eaf0f9;
@@ -209,17 +299,16 @@ function getEnterpriseDetail() {
     .job-list li {
       border: 1px solid #f5f5f5;
       .mid {
-          width: 300px;
+        width: 300px;
 
-          display: flex;
-          img {
-            width: 54px;
-            height: 54px;
-            border-radius: 4px;
-            margin-right: 10px;
-          }
-          
+        display: flex;
+        img {
+          width: 54px;
+          height: 54px;
+          border-radius: 4px;
+          margin-right: 10px;
         }
+      }
     }
   }
   .enterprise-base {
@@ -298,4 +387,3 @@ function getEnterpriseDetail() {
   }
 }
 </style>
-

@@ -13,3 +13,11 @@ app.use(ElementPlus, {
   locale: zhCn
 })
 app.mount('#app')
+
+// 监听函数
+function dataListener (data) {
+  console.log('来自主应用的数据', data)
+}
+
+// 监听数据变化
+window.microApp.addDataListener(dataListener)

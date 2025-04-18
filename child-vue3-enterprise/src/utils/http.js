@@ -11,15 +11,17 @@ axios.defaults.baseURL = ''
 if (window.__MICRO_APP_ENVIRONMENT__) {
   // 从父应用获取共享数据，包含身份认证等重要信息
   const dataForChild = window.microApp.getData()
-  console.log("🚀 ~ dataForChild:", dataForChild)
-  
-  /** 
+  const globalData = window.microApp.getGlobalData() // 返回全局数据
+  console.log("🚀 ~ globalData:", globalData)
+  console.log('🚀 ~ dataForChild:', dataForChild)
+
+  /**
    * 当父应用有传递数据时，提取token并配置到axios默认请求头
    * 注意：该token用于所有后续接口请求的鉴权
    */
-  if (dataForChild) { 
+  if (dataForChild) {
     const { token } = dataForChild
-    axios.defaults.headers["x-client-token"] = token;
+    axios.defaults.headers['x-client-token'] = token
   }
 } else { 
   /** 
