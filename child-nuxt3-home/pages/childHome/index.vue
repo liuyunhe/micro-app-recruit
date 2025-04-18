@@ -47,7 +47,7 @@
             </h3>
           </div>
           <div class="class-m">
-            <el-carousel indicator-position="outside" :interval="4500">
+            <el-carousel  :interval="4500" height="485px">
               <el-carousel-item
                 v-for="(item, index) in homeData.indexBannelList"
                 :key="index"
