@@ -19,22 +19,22 @@ microApp.start({
       url: 'http://localhost:3000/childHome/',
       level: 3
     },
-    {
-      name: 'childJob',
-      url: 'http://localhost:8080',
-      level: 3
-    },
+    // {
+    //   name: 'childJob',
+    //   url: 'http://localhost:8080',
+    //   level: 3
+    // },
     {
       name: 'childEnterprise',
       url: 'http://localhost:3002/child/findEnterprise#/',
       iframe: true, // 使用iframe渲染子应用
       level: 3
     },
-    {
-      name: 'childAbout',
-      url: 'http://localhost:3003',
-      level: 3
-    }
+    // {
+    //   name: 'childAbout',
+    //   url: 'http://localhost:3003',
+    //   level: 3
+    // }
   ], // 预加载的子应用
   lifeCycles: {
     created(opts) {
