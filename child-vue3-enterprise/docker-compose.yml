@@ -1,0 +1,19 @@
+services:
+  child-vue3-enterprise-mongo:
+    image: mongo:latest
+    container_name: child-vue3-enterprise-mongo
+    volumes:
+      - '.docker-volumes/mongo/data:/data/db'
+    ports:
+      - 27017:27017
+  child-vue3-enterprise:
+    depends_on:
+      - child-vue3-enterprise-mongo
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    image: micro-app-child-enterprise
+    container_name: child-vue3-enterprise
+    ports:
+      - "8080:80"
+    
