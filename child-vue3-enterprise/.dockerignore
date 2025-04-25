@@ -17,6 +17,8 @@ coverage
 
 # Editor directories and files
 .vscode/*
+.docker-volumes/*
+.
 !.vscode/extensions.json
 .idea
 *.suo
