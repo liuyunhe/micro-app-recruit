@@ -1,5 +1,5 @@
 # 第一阶段：构建阶段
-FROM node:22 as build-stage
+FROM node:22-alpine as build-stage
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
