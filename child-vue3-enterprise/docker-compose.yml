@@ -9,9 +9,9 @@ services:
   child-vue3-enterprise:
     depends_on:
       - child-vue3-enterprise-mongo
-    build: 
-      context: .
-      dockerfile: Dockerfile
+    build:
+      context: . # 当前目录
+      dockerfile: Dockerfile # 基于 Dockerfile 构建
     image: micro-app-child-enterprise
     container_name: child-vue3-enterprise
     ports:
