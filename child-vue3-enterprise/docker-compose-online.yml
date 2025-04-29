@@ -1,0 +1,16 @@
+services:
+  child-vue3-enterprise-mongo:
+    image: mongo:latest
+    container_name: child-vue3-enterprise-mongo
+    volumes:
+      - '.docker-volumes/mongo/data:/data/db'
+    ports:
+      - 27017:27017
+  child-vue3-enterprise:
+    depends_on:
+      - child-vue3-enterprise-mongo
+    image: crpi-p6sje6ilhuj37ago.cn-beijing.personal.cr.aliyuncs.com/liuyunhe/test:0.0.2
+    container_name: child-vue3-enterprise
+    ports:
+      - "8081:80"
+    
